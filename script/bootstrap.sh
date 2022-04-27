@@ -35,11 +35,13 @@ install_packages_apt()
 
     sudo apt-get update && \
         apt-get install --no-install-recommends --allow-unauthenticated -y \
+            curl \
             qemu \
             qemu-user-static \
             binfmt-support \
             parted \
-            dcfldd
+            dcfldd \
+            unzip
 
 }
 
@@ -92,13 +94,6 @@ install_packages()
 main()
 {
     install_packages
-
-    echo "Bootstrapping openthread"
-    "$(dirname "$0")"/../openthread/script/bootstrap
-
-    echo "Bootstrapping silabs"
-    "$(dirname "$0")"/bootstrap_silabs
-
     echo "Bootstrap completed successfully."
 }
 

@@ -18,7 +18,7 @@ script_dir="$(dirname "$(realpath "$script_path")")"
 repo_dir="$script_dir"
 
 # This is where the image will be created
-OUTPUT_ROOT=${OUTPUT_ROOT:-${repo_dir}/build/}
+OUTPUT_ROOT=${OUTPUT_ROOT:-${repo_dir}/build}
 echo "OUTPUT_ROOT=${OUTPUT_ROOT}"
 mkdir -p ${OUTPUT_ROOT}
 
@@ -64,17 +64,17 @@ main() {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".zip ]] || curl -LO "$IMAGE_URL"
+        [[ -f "$BASE_IMAGE_NAME".zip ]] || curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
         unzip "$BASE_IMAGE_NAME".zip -d /tmp
 
+        # Expand OS partition to 4GB
+        EXPAND_SIZE=4096
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
 
-        # Expand OS partition to 4GB
-        EXPAND_SIZE=4096
         (cd docker-rpi-emu/scripts &&
             sudo ./expand.sh "$TOOLS_HOME"/images/"$IMAGE_FILE" "$EXPAND_SIZE")
     }
@@ -87,7 +87,7 @@ main() {
 
     # Create
     mkdir -p "$IMAGE_MOUNT_POINT"
-    chown -R $USER: "$IMAGE_MOUNT_POINT"
+    chown -R $(whoami): "$IMAGE_MOUNT_POINT"
     ls -alh "$IMAGE_MOUNT_POINT"
     script/mount.sh "$STAGE_DIR"/raspios_base.img "$IMAGE_MOUNT_POINT"
 
