@@ -1,14 +1,16 @@
 # custom-rpi-img
 
-## Usage
+## Requirements
+This will only work on **linux** machines. It will not work on macOS because there's no viable way to mount ext3/4 partitions.
 
-### Setup
 A bootstrap script has been provided. The only setup you will need to do is to initialize git submodules and run the script
 
 ```shell
 git submodule update --init --recursive .
 ./script/bootstrap
 ```
+
+## Usage
 
 ### Building
 To build, simply run `./build.sh`. This script will do the following:
