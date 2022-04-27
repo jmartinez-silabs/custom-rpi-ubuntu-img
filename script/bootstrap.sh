@@ -55,12 +55,6 @@ install_packages_rpm()
     echo 'rpm not supported currently' && false
 }
 
-install_packages_brew()
-{
-    echo 'Installing script dependencies...'
-    brew install coreutils openjdk@11
-}
-
 install_packages_source()
 {
     echo 'source not supported currently' && false
@@ -68,8 +62,7 @@ install_packages_source()
 
 install_packages_pip3()
 {
-    sudo pip3 install --system -U cmake==3.22.4
-    cmake --version | grep 3.22.4
+    return
 }
 
 install_packages()
