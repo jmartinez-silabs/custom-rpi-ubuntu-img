@@ -85,7 +85,7 @@ main() {
     [ -d "$STAGE_DIR" ] || mkdir -p "$STAGE_DIR"
     cp -v "$IMAGE_FILE" "$STAGE_DIR"/raspios_base.img
 
-    # Create
+    # Mount the base image
     mkdir -p "$IMAGE_MOUNT_POINT"
     chown -R $(whoami): "$IMAGE_MOUNT_POINT"
     ls -alh "$IMAGE_MOUNT_POINT"

@@ -1,0 +1,3 @@
+[submodule "docker-rpi-emu"]
+	path = docker-rpi-emu
+	url = https://github.com/ryankurte/docker-rpi-emu
