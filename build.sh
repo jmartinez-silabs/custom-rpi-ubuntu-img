@@ -22,20 +22,20 @@ OUTPUT_ROOT=${OUTPUT_ROOT:-${repo_dir}/build}
 echo "OUTPUT_ROOT=${OUTPUT_ROOT}"
 mkdir -p ${OUTPUT_ROOT}
 
-# Output raspios image and zip name
-CUSTOM_IMG_FILE="raspios_lite_custom_$(date +%Y%m%d).img"
-IMG_ZIP_FILE="$CUSTOM_IMG_FILE.zip"
+# Output Rasbian-ubuntu-os image and zip name
+CUSTOM_IMG_FILE="raspi-ubuntu_os_custom_$(date +%Y%m%d).img"
+IMG_XZ_FILE="$CUSTOM_IMG_FILE.xz"
 
 # Staging directory where images are copied to for temporary storage
-STAGE_DIR=/tmp/raspbian
+STAGE_DIR=/tmp/raspbian-ubuntu
 
 # Where the raspios image will be mounted
 IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
-# URL for a raspios image
-BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip"}
+# URL for a raspiubuntu image
+BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-desktop-arm64+raspi.img.xz"}
 
-# Where to download the raspios image
+# Where to download the raspiubuntu image
 TOOLS_HOME=$HOME/.cache/tools
 
 # ==============================================================================
@@ -43,7 +43,7 @@ cleanup() {
     set +e
 
     # Unmount and detach any loop devices
-    loop_names=$(losetup -j $STAGE_DIR/raspios_base.img --output NAME -n)
+    loop_names=$(losetup -j $STAGE_DIR/raspiubuntuos_base.img --output NAME -n)
     for loop in ${loop_names}; do
         sudo umount -lf "${loop}p1"
         sudo umount -lf "${loop}p2"
@@ -58,19 +58,20 @@ trap cleanup EXIT
 main() {
 
     # Download base image
-    BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}" .zip)
-    IMAGE_FILE="$BASE_IMAGE_NAME".img
+    BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}")
+    IMAGE_FILE=$(basename "${BASE_IMAGE_URL}" .xz)
     [ -f "$TOOLS_HOME"/images/"$IMAGE_FILE" ] || {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".zip ]] || curl -kLO "$BASE_IMAGE_URL"
+        [[ -f "$BASE_IMAGE_NAME" ]] || curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
-        unzip "$BASE_IMAGE_NAME".zip -d /tmp
+        xz -d "$BASE_IMAGE_NAME"
+        mv "$IMAGE_FILE" /tmp
 
-        # Expand OS partition to 4GB
-        EXPAND_SIZE=4096
+        # Expand OS partition to 8GB
+        EXPAND_SIZE=6144
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -79,7 +80,7 @@ main() {
             sudo ./expand.sh "$TOOLS_HOME"/images/"$IMAGE_FILE" "$EXPAND_SIZE")
     }
 
-    IMAGE_FILE="$TOOLS_HOME"/images/"$BASE_IMAGE_NAME".img
+    IMAGE_FILE="$TOOLS_HOME"/images/"$IMAGE_FILE"
 
     # Create a staging dir and make a copy of the raspios base image
     [ -d "$STAGE_DIR" ] || mkdir -p "$STAGE_DIR"
@@ -134,7 +135,7 @@ main() {
         fi
 
         # Zip image file
-        (cd $STAGE_DIR && zip "$IMG_ZIP_FILE" $CUSTOM_IMG_FILE && mv "$IMG_ZIP_FILE" "$OUTPUT_ROOT")
+        (cd $STAGE_DIR && xz "$IMG_XZ_FILE" $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
 }
 
