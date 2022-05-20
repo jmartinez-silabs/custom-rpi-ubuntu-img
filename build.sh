@@ -58,20 +58,20 @@ trap cleanup EXIT
 main() {
 
     # Download base image
-    BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}")
-    IMAGE_FILE=$(basename "${BASE_IMAGE_URL}" .xz)
+    BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}" .img.xz)
+    IMAGE_FILE="$BASE_IMAGE_NAME".img
     [ -f "$TOOLS_HOME"/images/"$IMAGE_FILE" ] || {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME" ]] || curl -kLO "$BASE_IMAGE_URL"
+        [[ -f "$BASE_IMAGE_NAME".img.xz ]] || curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
-        xz -d "$BASE_IMAGE_NAME"
-        mv "$IMAGE_FILE" /tmp
+        xz -dk "$BASE_IMAGE_NAME".img.xz
+        cp -v "$IMAGE_FILE" /tmp
 
-        # Expand OS partition to 8GB
-        EXPAND_SIZE=6144
+        # Expand OS partition to 15GB
+        EXPAND_SIZE=15360
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -135,7 +135,7 @@ main() {
         fi
 
         # Zip image file
-        (cd $STAGE_DIR && xz "$IMG_XZ_FILE" $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
+        (cd $STAGE_DIR && xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
 }
 
