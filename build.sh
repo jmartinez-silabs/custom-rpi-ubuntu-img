@@ -68,10 +68,10 @@ main() {
 
         # Extract
         xz -dk "$BASE_IMAGE_NAME".img.xz
-        mv -v "$IMAGE_FILE" /tmp
+        cp -v "$IMAGE_FILE" /tmp
 
-        # Expand OS partition to 6GB
-        EXPAND_SIZE=8192
+        # Expand OS partition to 15GB
+        EXPAND_SIZE=15360
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -84,13 +84,13 @@ main() {
 
     # Create a staging dir and make a copy of the raspios base image
     [ -d "$STAGE_DIR" ] || mkdir -p "$STAGE_DIR"
-    cp -v "$IMAGE_FILE" "$STAGE_DIR"/raspiubuntuos_base.img
+    cp -v "$IMAGE_FILE" "$STAGE_DIR"/raspios_base.img
 
     # Mount the base image
     mkdir -p "$IMAGE_MOUNT_POINT"
     chown -R $(whoami): "$IMAGE_MOUNT_POINT"
     ls -alh "$IMAGE_MOUNT_POINT"
-    script/mount.sh "$STAGE_DIR"/raspiubuntuos_base.img "$IMAGE_MOUNT_POINT"
+    script/mount.sh "$STAGE_DIR"/raspios_base.img "$IMAGE_MOUNT_POINT"
 
     (
         # Setup QEMU
@@ -111,7 +111,7 @@ main() {
         # Tear down QEMU and create new .img file
         sync && sleep 1
         sudo ./qemu-cleanup.sh "$IMAGE_MOUNT_POINT"
-        LOOP_NAME=$(losetup -j $STAGE_DIR/raspiubuntuos_base.img --output NAME -n)
+        LOOP_NAME=$(losetup -j $STAGE_DIR/raspios_base.img --output NAME -n)
         sudo sh -c "dcfldd of=$STAGE_DIR/$CUSTOM_IMG_FILE if=$LOOP_NAME bs=1m && sync"
 
         # Attempt to shrink image
@@ -135,7 +135,7 @@ main() {
         fi
 
         # Zip image file
-        (cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
+        (cd $STAGE_DIR && xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
 }
 
