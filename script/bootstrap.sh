@@ -42,7 +42,6 @@ install_packages_apt()
             parted \
             dcfldd \
             xz-utils
-
 }
 
 install_packages_opkg()
