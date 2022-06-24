@@ -11,14 +11,15 @@ echo "$(hostname -I | cut -d\  -f1) $(hostname)" | tee -a /etc/hosts
 
 ls -lh /etc/resolv.conf
 unlink /etc/resolv.conf
-echo "nameserver 127.0.0.53" | tee /etc/resolv.conf
-ls -lh /etc/resolv.conf
+#echo "nameserver 127.0.0.53" | tee /etc/resolv.conf
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
 
 #mv /etc/apt/apt.conf.d/70debconf /etc/apt/apt.conf.d/70debconf.bak
 ex +"%s@DPkg@//DPkg" -cwq /etc/apt/apt.conf.d/70debconf
 dpkg-reconfigure debconf -f noninteractive -p critical
 
-apt-get purge -y needrestart
+apt purge -y needrestart
+apt autoremove -y
 
 apt install -y git
 
@@ -32,10 +33,10 @@ echo "---------------------------------------------------------"
 echo "3.1 Clone repo connectedhomeip and update submodule"
 echo "---------------------------------------------------------"
 
-runuser -l "$UBUNTUUSER" -c    'cd /home/ubuntu &&
+runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 				git clone https://github.com/project-chip/connectedhomeip.git &&
 			     	cd /home/ubuntu/connectedhomeip &&
-			     	git checkout cfc35951be66a664a6efdadea56d1b8ea6e63e96 &&
+			     	git checkout 4d50b1084 &&
 				git submodule update --init --recursive'
 				
 # Clone repo ot-br-posix and update submodule
@@ -45,7 +46,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c    'cd /home/ubuntu &&
 				git clone https://github.com/openthread/ot-br-posix.git &&
 			      	cd /home/ubuntu/ot-br-posix &&
-			     	git checkout 72bb3d45684f837e67e7f1ec20a9a8e3ac4a4419 &&
+			     	git checkout f0bd216 &&
 				git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
@@ -56,6 +57,7 @@ echo '# Matter related alias' | tee -a /home/$UBUNTUUSER/.bashrc
 echo "alias mattertool='source /home/ubuntu/scripts/matterTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias otbrsetup='source /home/ubuntu/scripts/setupOTBR.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias prerequisites='source /home/ubuntu/scripts/prerequisites.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
+echo "alias python='source /usr/bin/python3'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 
 # Prerequisites installation
 echo "---------------------------------------------------------"
@@ -70,8 +72,9 @@ runuser -l "$UBUNTUUSER"  -c   'export LANGUAGE=en_US.UTF-8
 echo "---------------------------------------------------------"
 echo "3.5 Clean up customization"
 echo "---------------------------------------------------------"
-apt-get update -y
-apt-get install -y needrestart
+
+#apt-get update -y
+apt install -y needrestart python3-apt
 #mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf

@@ -34,7 +34,9 @@ STAGE_DIR=/tmp/raspbian-ubuntu
 IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
 # URL for a raspiubuntu image
+#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/20.04/release/ubuntu-20.04.4-preinstalled-server-arm64+raspi.img.xz"}
 #BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/21.10/release/ubuntu-21.10-preinstalled-desktop-arm64+raspi.img.xz"}
+#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/21.10/release/ubuntu-21.10-preinstalled-server-arm64+raspi.img.xz"}
 #BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-desktop-arm64+raspi.img.xz"}
 BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-server-arm64+raspi.img.xz"}
 
@@ -69,15 +71,15 @@ main() {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".img.xz ]] #|| curl -kLO "$BASE_IMAGE_URL"
+        [[ -f "$BASE_IMAGE_NAME".img.xz ]] #| curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
         xz -dk "$BASE_IMAGE_NAME".img.xz
         mv -v "$IMAGE_FILE" /tmp
         #unzip "$BASE_IMAGE_NAME".zip -d /tmp
 
-        # Expand OS partition to 20GB
-        EXPAND_SIZE=20480
+        # Expand OS partition to 18GB
+        EXPAND_SIZE=18432
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -111,7 +113,7 @@ main() {
         # Use chroot to run any commands
         # Ex:
         #     sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash whoami
-        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh &&       
+        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh   
 
         # Tear down QEMU and create new .img file
         sync && sleep 1
