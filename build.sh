@@ -71,7 +71,7 @@ main() {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".img.xz ]] #| curl -kLO "$BASE_IMAGE_URL"
+        [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
         xz -dk "$BASE_IMAGE_NAME".img.xz
