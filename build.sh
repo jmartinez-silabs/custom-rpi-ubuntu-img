@@ -74,12 +74,11 @@ main() {
         [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
-        xz -dk "$BASE_IMAGE_NAME".img.xz
+        xz -dv "$BASE_IMAGE_NAME".img.xz &&
         mv -v "$IMAGE_FILE" /tmp
-        #unzip "$BASE_IMAGE_NAME".zip -d /tmp
-
-        # Expand OS partition to 18GB
-        EXPAND_SIZE=18432
+        
+        # Expand OS partition to 13GB
+        EXPAND_SIZE=13312
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")

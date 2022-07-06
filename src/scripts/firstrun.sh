@@ -2,6 +2,7 @@
 
 ./setupOTBR.sh -if wlan0 -s &&
 ./setupOTBR.sh -i &&
+
 sudo reboot now
 
 #sudo systemctl status | grep otbr
