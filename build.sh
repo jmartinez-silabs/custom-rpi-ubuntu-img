@@ -71,14 +71,14 @@ main() {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL"
+        [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL" &&
 
         # Extract
         xz -dv "$BASE_IMAGE_NAME".img.xz &&
         mv -v "$IMAGE_FILE" /tmp
         
-        # Expand OS partition to 13GB
-        EXPAND_SIZE=15360
+        # Expand OS partition to 16GB
+        EXPAND_SIZE=16384
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")

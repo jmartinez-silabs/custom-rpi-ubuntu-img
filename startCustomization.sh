@@ -17,6 +17,8 @@ echo "3. Start building"
 echo "===================================="
 ./build.sh &&
 
+rm -f /home/$(whoami)/.cache/tools/images/* /tmp/raspbian-ubuntu/*
+
 sudo sed -i "/$(whoami) ALL=(ALL) NOPASSWD:ALL/d" /etc/sudoers
 
 echo "Customization is done."
