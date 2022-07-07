@@ -78,7 +78,7 @@ main() {
         mv -v "$IMAGE_FILE" /tmp
         
         # Expand OS partition to 13GB
-        EXPAND_SIZE=13312
+        EXPAND_SIZE=15360
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -121,7 +121,7 @@ main() {
         sudo sh -c "dcfldd of=$STAGE_DIR/$CUSTOM_IMG_FILE if=$LOOP_NAME bs=1m && sync"
 
         # Attempt to shrink image
-        sudo cp "$STAGE_DIR/$CUSTOM_IMG_FILE" "$STAGE_DIR/${CUSTOM_IMG_FILE}_backup.img"
+        #sudo cp "$STAGE_DIR/$CUSTOM_IMG_FILE" "$STAGE_DIR/${CUSTOM_IMG_FILE}_backup.img"
         if [[ ! -f /usr/bin/pishrink.sh ]]; then
             sudo wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh -O /usr/bin/pishrink.sh && sudo chmod a+x /usr/bin/pishrink.sh
         fi
@@ -136,9 +136,9 @@ main() {
         set -e
 
         # (Optional) Write image to SD card
-        if [[ -n ${SD_CARD:=} ]]; then
-            sudo sh -c "dcfldd if=$STAGE_DIR/$CUSTOM_IMG_FILE of=$SD_CARD bs=1m && sync"
-        fi
+        #if [[ -n ${SD_CARD:=} ]]; then
+        #    sudo sh -c "dcfldd if=$STAGE_DIR/$CUSTOM_IMG_FILE of=$SD_CARD bs=1m && sync"
+        #fi
 
         # Zip image file
         (cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")

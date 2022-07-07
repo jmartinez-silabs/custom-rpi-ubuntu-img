@@ -17,6 +17,6 @@ echo "3. Start building"
 echo "===================================="
 ./build.sh &&
 
-sudo grep -v "echo $(whoami) ALL=(ALL) NOPASSWD:ALL" /etc/sudoers > tmpsudoers && sudo mv tmpsudoers /etc/sudoers
+sudo sed -i "/$(whoami) ALL=(ALL) NOPASSWD:ALL/d" /etc/sudoers
 
 echo "Customization is done."

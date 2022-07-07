@@ -78,5 +78,5 @@ apt install -y needrestart python3-apt
 #mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf
-grep -v "echo $(hostname -I | cut -d\  -f1) $(hostname)" /etc/hosts > tmpfile && mv tmpfile /etc/hosts
-grep -v "echo $UBUNTUUSER ALL=(ALL) NOPASSWD:ALL" /etc/sudoers > tmpsudoers && mv tmpsudoers /etc/sudoers
+sed -i "/$(hostname -I | cut -d\  -f1) $(hostname)/d" /etc/hosts
+sed -i "/$UBUNTUUSER ALL=(ALL) NOPASSWD:ALL/d" /etc/sudoers
