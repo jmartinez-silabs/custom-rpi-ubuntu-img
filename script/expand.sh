@@ -38,8 +38,8 @@ parted $LOOP_BASE print
 
 PARTITION_INFO=($`parted $LOOP_BASE print -m`)
 
-RESIZE_END=`echo ${PARTITION_INFO[1]} | grep -oP "(?<=${LOOP_BASE}:)[0-9]+(\,[0-9]..)+"`
-RESIZE_START=`echo ${PARTITION_INFO[5]} | grep -oP "(?<=2:)[0-9A-Z]+"`
+RESIZE_END=`echo ${PARTITION_INFO[1]} | grep -oP "(?<=${LOOP_BASE}:)[0-9]+[.,]+[0-9]+[A-Z]+"`
+RESIZE_START=`echo ${PARTITION_INFO[5]} | grep -oP "(?<=2:)[0-9]+[A-Z]+"`
 
 echo "Making new partition from ${RESIZE_START} to ${RESIZE_END}"
 

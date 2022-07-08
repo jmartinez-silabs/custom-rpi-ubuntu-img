@@ -1,7 +1,12 @@
 #!/bin/bash
 
 echo "START CUSTOMIZATION THE IMAGE"
-sudo echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
+if grep "$(whoami) ALL=(ALL) NOPASSWD:ALL" /etc/sudoers
+then
+	echo
+else
+	sudo echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
+fi
 
 echo "===================================="
 echo "1. Update submoddules"
@@ -18,7 +23,5 @@ echo "===================================="
 ./build.sh &&
 
 rm -f /home/$(whoami)/.cache/tools/images/* /tmp/raspbian-ubuntu/*
-
-sudo sed -i "/$(whoami) ALL=(ALL) NOPASSWD:ALL/d" /etc/sudoers
 
 echo "Customization is done."
