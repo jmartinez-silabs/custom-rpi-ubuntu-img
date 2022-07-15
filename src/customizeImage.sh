@@ -11,15 +11,11 @@ echo "$(hostname -I | cut -d\  -f1) $(hostname)" | tee -a /etc/hosts
 
 ls -lh /etc/resolv.conf
 unlink /etc/resolv.conf
-#echo "nameserver 127.0.0.53" | tee /etc/resolv.conf
 echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
 
 #mv /etc/apt/apt.conf.d/70debconf /etc/apt/apt.conf.d/70debconf.bak
 ex +"%s@DPkg@//DPkg" -cwq /etc/apt/apt.conf.d/70debconf
 dpkg-reconfigure debconf -f noninteractive -p critical
-
-apt purge -y needrestart
-apt autoremove -y
 
 apt install -y git
 
@@ -73,8 +69,6 @@ echo "---------------------------------------------------------"
 echo "3.5 Clean up customization"
 echo "---------------------------------------------------------"
 
-#apt-get update -y
-apt install -y needrestart python3-apt
 #mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf

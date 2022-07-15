@@ -1,12 +1,16 @@
 #!/bin/bash
 
+sudo apt purge -y needrestart
+sudo apt autoremove -y
+
 sudo add-apt-repository ppa:deadsnakes/ppa -y
 
-sudo apt update
+sudo apt --fix-missing
 sudo apt install -y python3.9 -y
 sudo unlink /usr/bin/python3
-sudo ln -s /usr/bin/python3.9 /usr/bin/python3
-sudo ln -s /usr/bin/python3 /usr/bin/python
+sudo ln -s /usr/bin/python3.9 /usr/bin/python3 && sudo ln -s /usr/bin/python3 /usr/bin/python
+
+sudo apt remove python3-apt -y && sudo apt-get install python3-apt -y && sudo apt autoremove -y
 
 sudo apt install -y git gcc g++ python2-minimal python2 dh-python 2to3 python-is-python3 \
 						pkg-config libssl-dev libdbus-1-dev libglib2.0-dev libavahi-client-dev ninja-build \
@@ -27,6 +31,12 @@ export lastNodeId=0
 
 cd scripts &&
 
-./matterTool.sh buildCT
+./matterTool.sh buildCT &&
+./setupOTBR.sh -if wlan0 -s &&
+./setupOTBR.sh -i
+
+sudo apt install -y needrestart
+sudo apt --fix-missing update -y
+sudo apt install -f -y
 
 cd ~/

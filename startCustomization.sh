@@ -3,10 +3,12 @@
 echo "START CUSTOMIZATION THE IMAGE"
 if grep "$(whoami) ALL=(ALL) NOPASSWD:ALL" /etc/sudoers
 then
-	echo
+	echo "Do nothing"
 else
 	sudo echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 fi
+
+rm -f /home/$(whoami)/.cache/tools/images/* /tmp/raspbian-ubuntu/*
 
 echo "===================================="
 echo "1. Update submoddules"
@@ -20,8 +22,6 @@ sudo ./script/bootstrap.sh &&
 echo "===================================="
 echo "3. Start building"
 echo "===================================="
-./build.sh &&
-
-rm -f /home/$(whoami)/.cache/tools/images/* /tmp/raspbian-ubuntu/*
+./build.sh
 
 echo "Customization is done."

@@ -47,12 +47,6 @@ echo "Making new partition from ${RESIZE_START} to ${RESIZE_END}"
 parted $LOOP_BASE --script rm 2
 parted $LOOP_BASE --script mkpart primary ext4 ${RESIZE_START} ${RESIZE_END}
 
-#fsck.ext4 $LOOP_BASE
-
-# Check and resize file system
-#mke2fs -n $LOOP_P2 -y
-#e2fsck -f $LOOP_P2 -y
-#e2fsck -b 32768 $LOOP_P2 -y
 e2fsck -p -f $LOOP_P2
 resize2fs $LOOP_P2
 

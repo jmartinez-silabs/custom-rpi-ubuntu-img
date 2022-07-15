@@ -25,7 +25,6 @@ mkdir -p ${OUTPUT_ROOT}
 # Output Rasbian-ubuntu-os image and zip name
 CUSTOM_IMG_FILE="raspi-ubuntu_os_custom_$(date +%Y%m%d).img"
 IMG_XZ_FILE="$CUSTOM_IMG_FILE.xz"
-#IMG_XZ_FILE="$CUSTOM_IMG_FILE.zip"
 
 # Staging directory where images are copied to for temporary storage
 STAGE_DIR=/tmp/raspbian-ubuntu
@@ -35,9 +34,7 @@ IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
 # URL for a raspiubuntu image
 #BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/20.04/release/ubuntu-20.04.4-preinstalled-server-arm64+raspi.img.xz"}
-#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/21.10/release/ubuntu-21.10-preinstalled-desktop-arm64+raspi.img.xz"}
 #BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/21.10/release/ubuntu-21.10-preinstalled-server-arm64+raspi.img.xz"}
-#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-desktop-arm64+raspi.img.xz"}
 BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-server-arm64+raspi.img.xz"}
 
 # Where to download the raspiubuntu image
@@ -64,21 +61,20 @@ main() {
 
     # Download base image
     BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}" .img.xz)
-    #BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}" .zip)
     IMAGE_FILE="$BASE_IMAGE_NAME".img
     #IMAGE_FILE="$BASE_IMAGE_NAME"
     [ -f "$TOOLS_HOME"/images/"$IMAGE_FILE" ] || {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL" &&
+        [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
-        xz -dv "$BASE_IMAGE_NAME".img.xz &&
-        mv -v "$IMAGE_FILE" /tmp
+        (xz -dkv "$BASE_IMAGE_NAME".img.xz &&
+        mv -v "$IMAGE_FILE" /tmp)
         
-        # Expand OS partition to 16GB
-        EXPAND_SIZE=16384
+        # Expand OS partition to 17GB
+        EXPAND_SIZE=17408
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -134,11 +130,6 @@ main() {
             exit $retval
         fi
         set -e
-
-        # (Optional) Write image to SD card
-        #if [[ -n ${SD_CARD:=} ]]; then
-        #    sudo sh -c "dcfldd if=$STAGE_DIR/$CUSTOM_IMG_FILE of=$SD_CARD bs=1m && sync"
-        #fi
 
         # Zip image file
         (cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
