@@ -32,8 +32,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 				git clone https://github.com/project-chip/connectedhomeip.git &&
 			     	cd /home/ubuntu/connectedhomeip &&
-			     	git checkout 4d50b1084 &&
-				git submodule update --init --recursive'
+			     	git submodule update --init --recursive'
 				
 # Clone repo ot-br-posix and update submodule
 echo "---------------------------------------------------------"
@@ -42,8 +41,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c    'cd /home/ubuntu &&
 				git clone https://github.com/openthread/ot-br-posix.git &&
 			      	cd /home/ubuntu/ot-br-posix &&
-			     	git checkout f0bd216 &&
-				git submodule update --init --recursive'
+			     	git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
 echo "---------------------------------------------------------"
