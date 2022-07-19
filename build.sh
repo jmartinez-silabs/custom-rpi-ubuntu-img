@@ -73,8 +73,8 @@ main() {
         (xz -dkv "$BASE_IMAGE_NAME".img.xz &&
         mv -v "$IMAGE_FILE" /tmp)
         
-        # Expand OS partition to 18GB
-        EXPAND_SIZE=18432
+        # Expand OS partition to 19GB
+        EXPAND_SIZE=19456
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
