@@ -32,7 +32,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 				git clone https://github.com/project-chip/connectedhomeip.git &&
 			     	cd /home/ubuntu/connectedhomeip &&
-			     	git submodule update --init --recursive'
+			        ./scriipts/checkout_submodules.py --platform efr32'
 				
 # Clone repo ot-br-posix and update submodule
 echo "---------------------------------------------------------"

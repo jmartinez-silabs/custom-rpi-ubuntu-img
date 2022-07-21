@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "START CUSTOMIZATION THE IMAGE"
-if grep "$(whoami) ALL=(ALL) NOPASSWD:ALL" /etc/sudoers
+if sudo grep "$(whoami) ALL=(ALL) NOPASSWD:ALL" /etc/sudoers
 then
 	echo "Do nothing"
 else
