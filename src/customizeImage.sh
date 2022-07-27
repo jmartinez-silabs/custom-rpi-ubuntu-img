@@ -20,6 +20,7 @@ dpkg-reconfigure debconf -f noninteractive -p critical
 apt install -y git
 
 cp -vr /repo/src/scripts /home/"$UBUNTUUSER"
+mv -v /home/"$UBUNTUUSER"/scripts/README.md /home/"$UBUNTUUSER"
 
 chown -hR "$UBUNTUUSER":"$UBUNTUUSER" /home/"$UBUNTUUSER"/*
 chmod a+x /home/"$UBUNTUUSER"/scripts/*
@@ -28,7 +29,6 @@ chmod a+x /home/"$UBUNTUUSER"/scripts/*
 echo "---------------------------------------------------------"
 echo "3.1 Clone repo connectedhomeip and update submodule"
 echo "---------------------------------------------------------"
-
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 				git clone https://github.com/project-chip/connectedhomeip.git &&
 			     	cd /home/ubuntu/connectedhomeip &&
