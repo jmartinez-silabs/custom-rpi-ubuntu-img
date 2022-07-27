@@ -3,27 +3,20 @@
 ## Requirements
 This will only work on **linux** machines. It will not work on macOS because there's no viable way to mount ext3/4 partitions.
 
-A bootstrap script has been provided. The only setup you will need to do is to initialize git submodules and run the script
-
-```shell
-git submodule update --init --recursive .
-./script/bootstrap
-```
-
 ## Usage
 
 ### Building
-To build, simply run `./build.sh`. This script will do the following:
+To build, simply run `./startCustomization.sh`. This script will do the following:
 
 - Download the base raspios image if not already downloaded
-- Mount raspios
+- Mount preinstalled ubuntu for raspi
 - Execute custom scripts/commands
-- Unmount raspios
-- Package a new raspios image file and zip it
+- Unmount the preinstalled ubuntu for raspi
+- Package a new ubuntu image file and xz it
 
-The final `.zip` file will be in `build/`
+The final `.xz` file will be in `build/`
 
-### Running scripts/commands inside the custom raspios image
+### Running scripts/commands inside the custom ubuntu image
 Place any scripts you want to run inside of `src`. When a new script is added, make sure it to `build.sh` under the section that looks like this:
 
 ```

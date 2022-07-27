@@ -13,7 +13,7 @@ ls -lh /etc/resolv.conf
 unlink /etc/resolv.conf
 echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
 
-#mv /etc/apt/apt.conf.d/70debconf /etc/apt/apt.conf.d/70debconf.bak
+mv /etc/apt/apt.conf.d/70debconf /etc/apt/apt.conf.d/70debconf.bak
 ex +"%s@DPkg@//DPkg" -cwq /etc/apt/apt.conf.d/70debconf
 dpkg-reconfigure debconf -f noninteractive -p critical
 
@@ -50,8 +50,6 @@ echo "---------------------------------------------------------"
 echo '# Matter related alias' | tee -a /home/$UBUNTUUSER/.bashrc
 echo "alias mattertool='source /home/ubuntu/scripts/matterTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias otbrsetup='source /home/ubuntu/scripts/setupOTBR.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
-echo "alias prerequisites='source /home/ubuntu/scripts/prerequisites.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
-echo "alias python='source /usr/bin/python3'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 
 # Prerequisites installation
 echo "---------------------------------------------------------"
@@ -60,14 +58,15 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER"  -c   'export LANGUAGE=en_US.UTF-8
 				export LC_ALL=en_US.UTF-8
 				cd /home/ubuntu/scripts &&
-				./prerequisites.sh'
+				./prerequisites.sh &&
+				rm -f prerequisites.sh'
 				
 # Customization clean-up
 echo "---------------------------------------------------------"
 echo "3.5 Clean up customization"
 echo "---------------------------------------------------------"
 
-#mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
+mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf
 sed -i "/$(hostname -I | cut -d\  -f1) $(hostname)/d" /etc/hosts

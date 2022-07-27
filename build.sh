@@ -74,7 +74,7 @@ main() {
         mv -v "$IMAGE_FILE" /tmp)
         
         # Expand OS partition to 19GB
-        EXPAND_SIZE=19456
+        EXPAND_SIZE=13312
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
