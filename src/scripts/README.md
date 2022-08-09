@@ -34,7 +34,8 @@ home
     └── scripts (In-house scripts)
         ├── configurations.sh
         ├── matterTool.sh
-        └── setupOTBR.sh
+        ├── setupOTBR.sh
+        └── updateTools.sh
 ```
 
 <a name=“OTBR”></a>
@@ -42,7 +43,7 @@ home
 ## Openthread Border Router
 The pre-installed OTBR in this image was built against the following ot-br-posix commit SHA:
   ```
-  commit 72bb3d45684f837e67e7f1ec20a9a8e3ac4a4419
+  commit 1813352247aa60fb8993773918f1e5b4af6f3b79
   ```
 
 This commit was tested and validated to work in combination with the pre-built chip-tool present in this image.
@@ -84,6 +85,10 @@ Available options  :
   git fetch
   git checkout <SHA>
   otbrsetup -u
+  ```
+
+  Update (checkout & rebuild) OTBR and/or Chip-Tool with specific commits
+  updateTools -ct <commit> -otbr <commit>
   ```
 
 ## Matter

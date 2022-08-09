@@ -29,6 +29,7 @@ chmod a+x /home/"$UBUNTUUSER"/scripts/*
 echo "---------------------------------------------------------"
 echo "3.1 Clone repo connectedhomeip and update submodule"
 echo "---------------------------------------------------------"
+
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 				git clone https://github.com/project-chip/connectedhomeip.git &&
 			     	cd /home/ubuntu/connectedhomeip &&
@@ -41,6 +42,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c    'cd /home/ubuntu &&
 				git clone https://github.com/openthread/ot-br-posix.git &&
 			      	cd /home/ubuntu/ot-br-posix &&
+                               git checkout "1813352247aa60fb8993773918f1e5b4af6f3b79" &&
 			     	git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
@@ -50,6 +52,7 @@ echo "---------------------------------------------------------"
 echo '# Matter related alias' | tee -a /home/$UBUNTUUSER/.bashrc
 echo "alias mattertool='source /home/ubuntu/scripts/matterTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias otbrsetup='source /home/ubuntu/scripts/setupOTBR.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
+echo "alias updateTools='source /home/ubuntu/scripts/updateTools.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 
 # Prerequisites installation
 echo "---------------------------------------------------------"
