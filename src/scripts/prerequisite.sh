@@ -26,10 +26,10 @@ cd scripts &&
 
 ./matterTool.sh buildCT &&
 ./setupOTBR.sh -if wlan0 -s &&
-./setupOTBR.sh -i
+./setupOTBR.sh -i &&
 
-sudo apt install -y needrestart
-sudo apt --fix-missing update -y
-sudo apt install -f -y
+sudo apt install -y needrestart &&
+sudo apt --fix-missing update -y &&
+sudo apt install -f -y &&
 
 cd ~/
