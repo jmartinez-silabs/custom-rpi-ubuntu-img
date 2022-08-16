@@ -72,8 +72,8 @@ main() {
         (xz -dkv "$BASE_IMAGE_NAME".img.xz &&
         mv -v "$IMAGE_FILE" /tmp)
         
-        # Expand OS partition to 10GB
-        EXPAND_SIZE=10240
+        # Expand OS partition to 12GB
+        EXPAND_SIZE=12288
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -110,7 +110,7 @@ main() {
         sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh   
 
         # Tear down QEMU and create new .img file
-        sync && sleep 1
+        sync && sleep 2
         sudo ./qemu-cleanup.sh "$IMAGE_MOUNT_POINT"
         LOOP_NAME=$(losetup -j $STAGE_DIR/raspiubuntuos_base.img --output NAME -n)
         sudo sh -c "dcfldd of=$STAGE_DIR/$CUSTOM_IMG_FILE if=$LOOP_NAME bs=1m && sync"
@@ -133,6 +133,5 @@ main() {
         # Zip image file
         (cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
-    script/unmount.sh "$IMAGE_MOUNT_POINT"
 }
 main "$@"

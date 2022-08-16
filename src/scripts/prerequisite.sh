@@ -4,7 +4,7 @@ sudo apt purge -y needrestart
 sudo apt autoremove -y
 
 sudo apt update
-sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools \
+sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools openssh-server \
      libglib2.0-dev libavahi-client-dev ninja-build python3.10-venv python3-dev \
      python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev
 
@@ -32,6 +32,7 @@ $HOME/connectedhomeip/scripts/build/gn_bootstrap.sh
 ./setupOTBR.sh -if wlan0 -s
 ./setupOTBR.sh -i
 
+sudo ufw allow 22/tcp
 sudo apt install -y needrestart
 sudo apt --fix-missing update -y
 sudo apt install -f -y

@@ -39,6 +39,7 @@ main()
                        chmod a+x $HOME/scripts/matterTool.sh &&
                        $HOME/scripts/matterTool.sh rebuildCT &&
                        chmod a-x $HOME/scripts/matterTool.sh
+                       sync; sleep 1
         	fi
         fi
 #        set -e
