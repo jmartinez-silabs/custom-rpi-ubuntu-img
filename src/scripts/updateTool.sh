@@ -9,11 +9,11 @@ Print_Help()
 {
     echo "This bash script centralizes and simplifies the local otbr & chip-tool update of the given commits."
     echo "Usage:"
-    echo "        updateTools -h"
-    echo "        updateTools -ct <commit_hash>"
-    echo "        updateTools -otbr <commit_hash>"
-    echo "        updateTools -ct <commit_hash> -otbr <commit_hash>"
-    echo "        updateTools -otbr <commit_hash> -ct <commit_hash>"
+    echo "        updatetool -h"
+    echo "        updatetool -ct <commit_hash>"
+    echo "        updatetool -otbr <commit_hash>"
+    echo "        updatetool -ct <commit_hash> -otbr <commit_hash>"
+    echo "        updatetool -otbr <commit_hash> -ct <commit_hash>"
     echo "Available options:"
     echo "        -h, --help           Print this help."
     echo "        -ct, --chiptool      Specific commit of chip-tool for checking out."
@@ -32,12 +32,13 @@ main()
         reValue=$?
 #        set +e
         if [[ reValue -eq 0 ]]; then
-        	./scripts/checkout_submodules.py --platform efr32
+               ./scripts/checkout_submodules.py --shallow --platform linux
         	reValue=$?
         	if [[ reValue -eq 0 ]]; then
         		echo "Start rebuilding chip-tool:"
-        		cd "$HOME/scripts"
-        		./matterTool.sh rebuildCT
+                       chmod a+x $HOME/scripts/matterTool.sh &&
+                       $HOME/scripts/matterTool.sh rebuildCT &&
+                       chmod a-x $HOME/scripts/matterTool.sh
         	fi
         fi
 #        set -e
@@ -58,6 +59,7 @@ main()
         		echo "Start updating the otbr:"
         		cd "$HOME/scripts"
         		./setupOTBR.sh -u
+                       sudo reboot
         	fi
         fi
 #        set -e

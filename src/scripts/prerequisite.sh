@@ -4,8 +4,8 @@ sudo apt purge -y needrestart
 sudo apt autoremove -y
 
 sudo apt update
-sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev \
-     libglib2.0-dev libavahi-client-dev ninja-build python3-venv python3-dev \
+sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools \
+     libglib2.0-dev libavahi-client-dev ninja-build python3.10-venv python3-dev \
      python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev
 
 sudo apt install -y pi-bluetooth avahi-utils
@@ -22,14 +22,18 @@ export THREAD_DATA_SET=0
 export lastNodeId=0
 export SSID
 
-cd scripts &&
+cd scripts
+# Smaller footprint bootstrap (prepare the minimal environment for chipt-tool)
+$HOME/connectedhomeip/scripts/build/gn_bootstrap.sh
+# Clean build of chip-tool
+./matterTool.sh buildCT
 
-./matterTool.sh buildCT &&
-./setupOTBR.sh -if wlan0 -s &&
-./setupOTBR.sh -i &&
+# Build and install otbr
+./setupOTBR.sh -if wlan0 -s
+./setupOTBR.sh -i
 
-sudo apt install -y needrestart &&
-sudo apt --fix-missing update -y &&
-sudo apt install -f -y &&
+sudo apt install -y needrestart
+sudo apt --fix-missing update -y
+sudo apt install -f -y
 
 cd ~/

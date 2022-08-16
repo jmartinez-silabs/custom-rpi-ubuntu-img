@@ -118,7 +118,7 @@ Start_ThreadNetwork()
 {
 	echo_green "Starting a new thread network"
 	sudo ot-ctl factoryreset
-	sleep 7
+	sleep 3
 	sudo ot-ctl srp server disable
 	sudo ot-ctl srp server enable
 	sudo ot-ctl thread stop
@@ -126,12 +126,16 @@ Start_ThreadNetwork()
 	sudo ot-ctl ifconfig up
 	sudo ot-ctl prefix add fd11:22::/64 paros
 	sudo ot-ctl thread start
-	sleep 3
+	sleep 7
 	sudo ot-ctl extpanid
+	Get_ThreadDataset
+}
 
-	# copy command ouput first line and remove line feed to THREAD_DATA_SET
-	export THREAD_DATA_SET=$(sudo ot-ctl dataset active -x | sed -n 1p | sed -e "s/\r//g")
-	echo_green "New ThreadDataset: $THREAD_DATA_SET"
+Get_ThreadDataset()
+{
+        # copy command ouput first line and remove line feed to THREAD_DATA_SET
+        export THREAD_DATA_SET=$(sudo ot-ctl dataset active -x | sed -n 1p | sed -e "s/\r//g")
+        echo_green "New ThreadDataset: $THREAD_DATA_SET"
 }
 
 # start the matter commissionning process to a thread network by BLE
@@ -192,6 +196,7 @@ declare -A cmd_list=(
 	["buildCT"]=Clean_build_ChipTool
 	["rebuildCT"]=Rebuild_ChipTool
 	["startThread"]=Start_ThreadNetwork
+	["getThreadDataset"]=Get_ThreadDataset
 	["bleThread"]=Pair_BLE_Thread
 	["bleWifi"]=Pair_BLE_WiFi
 	["on"]=Send_OnOff_Cmds

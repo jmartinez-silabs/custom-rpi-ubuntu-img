@@ -33,9 +33,8 @@ STAGE_DIR=/tmp/raspbian-ubuntu
 IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
 # URL for a raspiubuntu image
-#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/20.04/release/ubuntu-20.04.4-preinstalled-server-arm64+raspi.img.xz"}
-#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/21.10/release/ubuntu-21.10-preinstalled-server-arm64+raspi.img.xz"}
-BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-server-arm64+raspi.img.xz"}
+#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-server-arm64+raspi.img.xz"}
+BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.1-preinstalled-server-arm64+raspi.img.xz"}
 
 # Where to download the raspiubuntu image
 TOOLS_HOME=$HOME/.cache/tools
@@ -73,8 +72,8 @@ main() {
         (xz -dkv "$BASE_IMAGE_NAME".img.xz &&
         mv -v "$IMAGE_FILE" /tmp)
         
-        # Expand OS partition to 19GB
-        EXPAND_SIZE=13312
+        # Expand OS partition to 10GB
+        EXPAND_SIZE=10240
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -134,5 +133,6 @@ main() {
         # Zip image file
         (cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
+    script/unmount.sh "$IMAGE_MOUNT_POINT"
 }
 main "$@"
