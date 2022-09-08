@@ -41,7 +41,8 @@ install_packages_apt()
             binfmt-support \
             parted \
             dcfldd \
-            xz-utils
+            xz-utils \
+            unzip
 }
 
 install_packages_opkg()

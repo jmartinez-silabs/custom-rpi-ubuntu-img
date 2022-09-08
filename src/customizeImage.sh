@@ -2,7 +2,7 @@
 
 echo "Run customize scripts here"
 UBUNTUUSER="ubuntu"
-PASSWORD="raspberrypi"
+PASSWORD="ubuntu"
 
 useradd -s /bin/bash -d /home/"$UBUNTUUSER" -m -G sudo "$UBUNTUUSER"
 usermod -p $(echo "$PASSWORD" | openssl passwd -1 -stdin) "$UBUNTUUSER"
@@ -34,6 +34,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 				git clone https://github.com/project-chip/connectedhomeip.git &&
 			     	cd /home/ubuntu/connectedhomeip &&
+                               git checkout "708685f4821df2aa0304f02db2773c429ad25eb8" &&
 			        ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule

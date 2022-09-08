@@ -23,8 +23,10 @@ echo "OUTPUT_ROOT=${OUTPUT_ROOT}"
 mkdir -p ${OUTPUT_ROOT}
 
 # Output Rasbian-ubuntu-os image and zip name
-CUSTOM_IMG_FILE="raspi-ubuntu_os_custom_$(date +%Y%m%d).img"
-IMG_XZ_FILE="$CUSTOM_IMG_FILE.xz"
+#CUSTOM_IMG_FILE="raspi-ubuntu_os_custom_$(date +%Y%m%d).img"
+CUSTOM_IMG_FILE="SilabsMatterPi.img"
+#IMG_XZ_FILE="$CUSTOM_IMG_FILE.xz"
+IMG_ZIP_FILE=$(basename "$CUSTOM_IMG_FILE" .img).zip
 
 # Staging directory where images are copied to for temporary storage
 STAGE_DIR=/tmp/raspbian-ubuntu
@@ -131,7 +133,8 @@ main() {
         set -e
 
         # Zip image file
-        (cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
+        (cd $STAGE_DIR && zip "$IMG_ZIP_FILE" $CUSTOM_IMG_FILE && mv "$IMG_ZIP_FILE" "$OUTPUT_ROOT")
+        #(cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
 }
 main "$@"
