@@ -32,20 +32,20 @@ echo "3.1 Clone repo connectedhomeip and update submodule"
 echo "---------------------------------------------------------"
 
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
-				git clone https://github.com/project-chip/connectedhomeip.git &&
-			     	cd /home/ubuntu/connectedhomeip &&
-                               git checkout "708685f4821df2aa0304f02db2773c429ad25eb8" &&
-			        ./scripts/checkout_submodules.py --shallow --platform linux'
+			       git clone https://github.com/project-chip/connectedhomeip.git
+			       cd /home/ubuntu/connectedhomeip
+                               git checkout "26a054c"
+			       ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule
 echo "---------------------------------------------------------"
 echo "3.2 Clone repo ot-br-posix and update submodule"
 echo "---------------------------------------------------------"
-runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
-				git clone https://github.com/openthread/ot-br-posix.git &&
-			      	cd /home/ubuntu/ot-br-posix &&
-                               git checkout "1813352247aa60fb8993773918f1e5b4af6f3b79" &&
-			     	git submodule update --init --recursive'
+runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
+			       git clone https://github.com/openthread/ot-br-posix.git
+			       cd /home/ubuntu/ot-br-posix
+                               git checkout "1813352247aa60fb8993773918f1e5b4af6f3b79"
+                               git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
 echo "---------------------------------------------------------"
@@ -61,10 +61,10 @@ echo "---------------------------------------------------------"
 echo "3.4 Install prerequisites"
 echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER"  -c  'export LANGUAGE=en_US.UTF-8
-				export LC_ALL=en_US.UTF-8
-				cd /home/ubuntu/scripts &&
-				./prerequisite.sh &&
-				rm -f prerequisite.sh'
+			       export LC_ALL=en_US.UTF-8
+			       cd /home/ubuntu/scripts
+			       ./prerequisite.sh
+			       rm -f prerequisite.sh'
 				
 # Customization clean-up
 echo "---------------------------------------------------------"
