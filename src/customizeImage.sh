@@ -22,6 +22,7 @@ apt install -y git
 
 cp -vr /repo/src/scripts /home/"$UBUNTUUSER"
 mv -v /home/"$UBUNTUUSER"/scripts/README.md /home/"$UBUNTUUSER"
+mv -v /home/"$UBUNTUUSER"/scripts/Versions.txt /home/"$UBUNTUUSER"
 
 chown -hR "$UBUNTUUSER":"$UBUNTUUSER" /home/"$UBUNTUUSER"/*
 chmod a+x /home/"$UBUNTUUSER"/scripts/*
@@ -34,7 +35,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 			       git clone https://github.com/project-chip/connectedhomeip.git
 			       cd /home/ubuntu/connectedhomeip
-                               git checkout "26a054c"
+                               git checkout "26a054c3114"
 			       ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule
@@ -44,7 +45,7 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
 			       git clone https://github.com/openthread/ot-br-posix.git
 			       cd /home/ubuntu/ot-br-posix
-                               git checkout "1813352247aa60fb8993773918f1e5b4af6f3b79"
+                               git checkout "1813352247a"
                                git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
@@ -75,5 +76,6 @@ chmod a-x /home/"$UBUNTUUSER"/scripts/matterTool.sh
 mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf
-sed -i "/$(hostname -I | cut -d\  -f1) $(hostname)/d" /etc/hosts
+#sed -i "/$(hostname -I | cut -d\  -f1) $(hostname)/d" /etc/hosts
+echo "127.0.1.1 $UBUNTUUSER" | tee -a /etc/hosts
 #sed -i "/$UBUNTUUSER ALL=(ALL) NOPASSWD:ALL/d" /etc/sudoers

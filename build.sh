@@ -17,6 +17,9 @@ script_dir="$(dirname "$(realpath "$script_path")")"
 # Path to repo
 repo_dir="$script_dir"
 
+# Release note
+release_note="$repo_dir/src/scripts/Versions.txt"
+
 # This is where the image will be created
 OUTPUT_ROOT=${OUTPUT_ROOT:-${repo_dir}/build}
 echo "OUTPUT_ROOT=${OUTPUT_ROOT}"
@@ -132,8 +135,11 @@ main() {
         fi
         set -e
 
+	# Copy release note to STAGE_DIR
+	cp $release_note $STAGE_DIR
+	
         # Zip image file
-        (cd $STAGE_DIR && zip "$IMG_ZIP_FILE" $CUSTOM_IMG_FILE && mv "$IMG_ZIP_FILE" "$OUTPUT_ROOT")
+        (cd $STAGE_DIR && zip "$IMG_ZIP_FILE" $CUSTOM_IMG_FILE Versions.txt && mv "$IMG_ZIP_FILE" "$OUTPUT_ROOT")
         #(cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
 }
