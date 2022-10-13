@@ -33,9 +33,10 @@ echo "3.1 Clone repo connectedhomeip and update submodule"
 echo "---------------------------------------------------------"
 
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
-			       git clone https://github.com/project-chip/connectedhomeip.git
+			       git clone https://github.com/project-chip/connectedhomeip.git &&
 			       cd /home/ubuntu/connectedhomeip
-                               git checkout "26a054c3114"
+			       git switch -c v1.0-branch origin/v1.0-branch &&
+                               git checkout "26a054c3114" &&
 			       ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule
@@ -43,9 +44,9 @@ echo "---------------------------------------------------------"
 echo "3.2 Clone repo ot-br-posix and update submodule"
 echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
-			       git clone https://github.com/openthread/ot-br-posix.git
+			       git clone https://github.com/openthread/ot-br-posix.git &&
 			       cd /home/ubuntu/ot-br-posix
-                               git checkout "1813352247a"
+                               git checkout "1813352247a" &&
                                git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
