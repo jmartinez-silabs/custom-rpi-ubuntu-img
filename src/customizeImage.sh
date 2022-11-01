@@ -36,7 +36,7 @@ runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 			       git clone https://github.com/project-chip/connectedhomeip.git &&
 			       cd /home/ubuntu/connectedhomeip
 			       git switch -c v1.0-branch origin/v1.0-branch &&
-                               git checkout "26a054c3114" &&
+                               git checkout "7f2b0a5920d" &&
 			       ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule
