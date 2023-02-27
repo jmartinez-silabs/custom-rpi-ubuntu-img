@@ -26,8 +26,8 @@ if [[ ! $NODE_ID ]]; then
 	export NODE_ID=$((1 + $RANDOM % 100000))
 fi
 
-if [[ ! $lastNodId ]]; then
-	export lastNodeId=0
+if [[ ! $LAST_NODE_ID ]]; then
+	export LAST_NODE_ID="0"
 fi
 
 if [[ ! $THREAD_DATA_SET ]]; then
@@ -55,6 +55,7 @@ Print_Help()
 	echo_bold_white "Available options  :"
 	echo " -h, --help			Print this help"
 	echo " -n, --nodeId DIGIT		Specify the Nodeid you are trying to reach"
+	echo " -di, --discriminator DIGIT		Specify the discriminator of the device to commission"
 	echo " -e, --endpoint DIGIT		Specify an endpoint to the desired the cluster"
 	echo " -d, --dataset HEX_STRING       Thread Operation Dataset"
 	echo " -s, --ssid STRING		WiFi AP ssid that the end devices needs to connect to"
@@ -77,7 +78,7 @@ Print_Vars()
 	echo "	PINCODE: $PINCODE"
 	echo "	DISCRIMINATOR: $DISCRIMINATOR"
 	echo "	SSID: $SSID"
-	echo "	lastNodeId: $lastNodeId"
+	echo "	LAST_NODE_ID: $LAST_NODE_ID"
 	echo_green "You can preset them with export X=Y before running the script"
 }
 
@@ -92,7 +93,7 @@ Clean_Vars()
 	unset DISCRIMINATOR
 	unset SSID
 	unset WIFI_PW
-	unset lastNodeId
+	unset LAST_NODE_ID
 }
 
 # Clean Build chip-tool from the given MATTER_ROOT path.
@@ -133,9 +134,9 @@ Start_ThreadNetwork()
 
 Get_ThreadDataset()
 {
-        # copy command ouput first line and remove line feed to THREAD_DATA_SET
-        export THREAD_DATA_SET=$(sudo ot-ctl dataset active -x | sed -n 1p | sed -e "s/\r//g")
-        echo_green "New ThreadDataset: $THREAD_DATA_SET"
+	# copy command ouput first line and remove line feed to THREAD_DATA_SET
+	export THREAD_DATA_SET=$(sudo ot-ctl dataset active -x | sed -n 1p | sed -e "s/\r//g")
+	echo_green "New ThreadDataset: $THREAD_DATA_SET"
 }
 
 # start the matter commissionning process to a thread network by BLE
@@ -146,14 +147,13 @@ Pair_BLE_Thread ()
 		return
 	fi
 
-	if [[ "$lastNodeId" = "$NODE_ID" ]]; then
+	if [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
 		export NODE_ID=$((1 + $RANDOM % 100000))
-		echo_green "Set Node id for the commissioned device : $NODE_ID"
 	fi
 
+	export LAST_NODE_ID="$NODE_ID"
 	"${CHIPTOOL_PATH}" pairing ble-thread ${NODE_ID} hex:"${THREAD_DATA_SET}" "${PINCODE}" "${DISCRIMINATOR}"
-
-	lastNodeId=$NODE_ID
+	echo_blue "The Node id of the commissioned device is $NODE_ID"
 }
 
 # start the matter commissionning process to a WiFi network by BLE
@@ -169,13 +169,13 @@ Pair_BLE_WiFi ()
 		return
 	fi
 
-	if [["$lastNodeId" == "$NODE_ID" ]]; then
+	if [["$LAST_NODE_ID" == "$NODE_ID" ] && isNodeProvided = true]; then
 		export NODE_ID=$((1 + $RANDOM % 100000))
-		echo_green "Set Node id for the commissioned device : $NODE_ID"
 	fi
-	"{$CHIPTOOL_PATH}" pairing ble-wifi "${NODE_ID}" "${SSID}" "${WIFI_PW}" "${PINCODE}" "${DISCRIMINATOR}"
 
-	lastNodeId = $NODE_ID
+	echo_green "Set Node id for the commissioned device : $NODE_ID"
+	export LAST_NODE_ID = $NODE_ID
+	"{$CHIPTOOL_PATH}" pairing ble-wifi "${NODE_ID}" "${SSID}" "${WIFI_PW}" "${PINCODE}" "${DISCRIMINATOR}"
 }
 
 Send_OnOff_Cmds ()
@@ -206,6 +206,7 @@ declare -A cmd_list=(
 
 declare cmd=""
 declare optArgs=()
+declare isNodeProvided=false
 
 # Activate Matter environment if it isn't already
 pipEnv=$(pip -V)
@@ -225,6 +226,16 @@ while [ $# -gt 0 ]; do
                 return
             fi
             export NODE_ID="$2"
+			isNodeProvided=true
+            shift
+            shift
+            ;;
+		--discriminator | -di)
+            if [[ -z "$2" ]]; then
+                echo_blue "Provide discriminator value"
+                return
+            fi
+            export DISCRIMINATOR="$2"
             shift
             shift
             ;;

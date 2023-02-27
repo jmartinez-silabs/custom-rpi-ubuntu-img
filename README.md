@@ -14,7 +14,7 @@ To build, simply run `./startCustomization.sh`. This script will do the followin
 - Unmount the preinstalled ubuntu for raspi
 - Package a new ubuntu image file and xz it
 
-The final `.xz` file will be in `build/`
+The final `.zip` file will be in `build/`
 
 ### Running scripts/commands inside the custom ubuntu image
 Place any scripts you want to run inside of `src`. When a new script is added, make sure it to `build.sh` under the section that looks like this:

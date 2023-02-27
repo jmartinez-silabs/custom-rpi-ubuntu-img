@@ -6,11 +6,26 @@ sudo apt autoremove -y
 sudo apt update
 sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools openssh-server \
      libglib2.0-dev libavahi-client-dev ninja-build python3.10-venv python3-dev \
-     python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev
+     python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev curl
 
 sudo apt install -y pi-bluetooth avahi-utils
 
 cd ~/
+curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+#sudo dpkg -i --force-overwrite /var/cache/apt/archives/nodejs_16.19.0-deb-1nodesource1_arm64.deb
+sudo apt -y install nodejs
+
+cd ~/
+git clone https://github.com/project-chip/zap.git
+cd zap
+git checkout "ffd5670eace603e75e150f9eff08e8aed5e1545e"
+
+sudo apt install -y --fix-missing libpixman-1-dev libcairo-dev libsdl-pango-dev libjpeg-dev libgif-dev
+
+npm ci
+
+cd ~/
+export ZAP_DEVELOPMENT_PATH="$HOME/zap"
 export MATTER_ROOT="$HOME/connectedhomeip"
 export CHIPTOOL_PATH="$MATTER_ROOT/out/standalone/chip-tool"
 export PINCODE=20202021

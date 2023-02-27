@@ -7,6 +7,7 @@ declare SKIP_BOOTSTRAP=1
 declare SKIP_SETUP=1
 declare SKIP_UPDATE=1
 declare setIf="eth0"
+declare setDebugLog=""
 
 Print_Help()
 {
@@ -17,6 +18,7 @@ Print_Help()
 	echo " -i, --install			Bootstrap, setup and install the OTBR. Usually for a new intallation"
 	echo " -s, --setup			Runs the OTBR setup only, use this to change the configurated infrastructure interface (use in combination with -if wlan0 for wifi)"
 	echo " -u, --update			Update the OTBR installation after the repo is updated"
+	echo " -dbg, --debug			Set OT_LOG_LEVEL to DEBUG"       
 }
 
 main()
@@ -30,7 +32,7 @@ main()
 	#setup otbr / change interface
 	if [[ "$SKIP_SETUP" -eq 0 ]]; then
 		echo "Setting up the OTBR with interface "$setIf""
-		INFRA_IF_NAME=$setIf "$OTBR_ROOT"/script/setup
+		INFRA_IF_NAME=$setIf $setDebugLog"$OTBR_ROOT"/script/setup
 	fi
 
 	#update otbr
@@ -83,6 +85,10 @@ while [ $# -gt 0 ]; do
 			SKIP_SETUP=1
 			SKIP_UPDATE=0
 			shift
+			;;
+		--debug | -dbg)
+			setDebugLog="OTBR_OPTIONS='-DOT_LOG_LEVEL=DEBG' "
+			shift	
 			;;
 		*)
 			shift

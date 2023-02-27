@@ -35,8 +35,8 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 			       git clone https://github.com/project-chip/connectedhomeip.git &&
 			       cd /home/ubuntu/connectedhomeip
-			       git switch -c v1.0-branch origin/v1.0-branch &&
-                               git checkout "7f2b0a5920d" &&
+			       git fetch &&
+                               git checkout "7e69c66bb" &&
 			       ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule
@@ -46,7 +46,8 @@ echo "---------------------------------------------------------"
 runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
 			       git clone https://github.com/openthread/ot-br-posix.git &&
 			       cd /home/ubuntu/ot-br-posix
-                               git checkout "1813352247a" &&
+			       git fetch &&
+                               git checkout "d9103922a" &&
                                git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh
@@ -57,6 +58,7 @@ echo '# Matter related alias' | tee -a /home/$UBUNTUUSER/.bashrc
 echo "alias mattertool='source /home/ubuntu/scripts/matterTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias otbrsetup='source /home/ubuntu/scripts/setupOTBR.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias updatetool='source /home/ubuntu/scripts/updateTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
+echo "export ZAP_DEVELOPMENT_PATH=/home/ubuntu/zap" | tee -a /home/"$UBUNTUUSER"/.bashrc
 
 # Prerequisites installation
 echo "---------------------------------------------------------"
