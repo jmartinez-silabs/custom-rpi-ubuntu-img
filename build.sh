@@ -39,7 +39,8 @@ IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
 # URL for a raspiubuntu image
 #BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-server-arm64+raspi.img.xz"}
-BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.1-preinstalled-server-arm64+raspi.img.xz"}
+#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.1-preinstalled-server-arm64+raspi.img.xz"}
+BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.2-preinstalled-server-arm64+raspi.img.xz"}
 
 # Where to download the raspiubuntu image
 TOOLS_HOME=$HOME/.cache/tools

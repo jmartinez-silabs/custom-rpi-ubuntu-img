@@ -18,7 +18,7 @@ sudo apt -y install nodejs
 cd ~/
 git clone https://github.com/project-chip/zap.git
 cd zap
-git checkout "ffd5670eace603e75e150f9eff08e8aed5e1545e"
+git checkout "4f2a3d6cc1bf51"
 
 sudo apt install -y --fix-missing libpixman-1-dev libcairo-dev libsdl-pango-dev libjpeg-dev libgif-dev
 

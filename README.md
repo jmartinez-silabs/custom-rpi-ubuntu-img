@@ -12,7 +12,7 @@ To build, simply run `./startCustomization.sh`. This script will do the followin
 - Mount preinstalled ubuntu for raspi
 - Execute custom scripts/commands
 - Unmount the preinstalled ubuntu for raspi
-- Package a new ubuntu image file and xz it
+- Package a new ubuntu image file and z it
 
 The final `.zip` file will be in `build/`
 

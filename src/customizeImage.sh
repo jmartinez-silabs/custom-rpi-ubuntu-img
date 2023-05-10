@@ -36,7 +36,7 @@ runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
 			       git clone https://github.com/project-chip/connectedhomeip.git &&
 			       cd /home/ubuntu/connectedhomeip
 			       git fetch &&
-                               git checkout "7e69c66bb" &&
+                               git checkout "80ee243109c" &&
 			       ./scripts/checkout_submodules.py --shallow --platform linux'
 				
 # Clone repo ot-br-posix and update submodule
@@ -47,7 +47,7 @@ runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
 			       git clone https://github.com/openthread/ot-br-posix.git &&
 			       cd /home/ubuntu/ot-br-posix
 			       git fetch &&
-                               git checkout "d9103922a" &&
+                               git checkout "d9103922af7" &&
                                git submodule update --init --recursive'
 
 # Add aliases for matterTool.sh and setupOTBR.sh

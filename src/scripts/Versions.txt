@@ -1,7 +1,7 @@
 Versions
-* Silicon Labs Matter Github: v1.1.0-1.1
-* Matter / Chip-Tool: 7e69c66bb
+* Silicon Labs Matter Github: v2.0.0-1.1
+* Matter / Chip-Tool: 80ee243109c
 * OpenThread
-  * ot-efr32: 038475dcc21
-  * openthread: 91fa1f455
-  * ot-br-posix: d9103922a
+  * ot-efr32: c252bafd663
+  * openthread: 91fa1f455a1
+  * ot-br-posix: d9103922af7

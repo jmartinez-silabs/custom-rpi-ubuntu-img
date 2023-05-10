@@ -43,7 +43,7 @@ home
 ## Openthread Border Router
 The pre-installed OTBR in this image was built against the following ot-br-posix commit SHA:
   ```
-  commit 1813352247aa60fb8993773918f1e5b4af6f3b79
+  commit d9103922af71d5b0a46dd7f224fd7bc2244ca1b4
   ```
 
 This commit was tested and validated to work in combination with the pre-built chip-tool present in this image.
@@ -52,7 +52,7 @@ For the OTBR to function, a valid ot-rcp must be connected by usb(ttyACM0) to th
   To build an efr32 ot-rcp see :
   [guide](https://www.silabs.com/documents/public/application-notes/an1256-using-sl-rcp-with-openthread-border-router.pdf)
 
-  **Use ot-efr32 commit ec6972548382226d5b9165de14a6131e50730954 to ensure compatibility with the aforementioned OTBR commit**
+  **Use ot-efr32 commit c252bafd663e429732df24af88f98bf6f97e1020 to ensure compatibility with the aforementioned OTBR commit**
 
 The pre-installed OTBR is configured for the infrastructure interface eth0.
 
