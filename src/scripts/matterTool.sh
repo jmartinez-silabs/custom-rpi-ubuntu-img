@@ -114,21 +114,20 @@ Rebuild_ChipTool ()
 	"$MATTER_ROOT"/scripts/examples/gn_build_example.sh "$MATTER_ROOT"/examples/chip-tool "$MATTER_ROOT"/out/standalone
 }
 
-#Start a Clean ThreadNetwork and save obtained dataset value for use in the thread provisionning command
 Start_ThreadNetwork()
 {
-	echo_green "Starting a new thread network"
+	echo_green “Starting a new thread network”
 	sudo ot-ctl factoryreset
 	sleep 3
 	sudo ot-ctl srp server disable
-	sudo ot-ctl srp server enable
-	sudo ot-ctl thread stop
-	sudo ot-ctl ifconfig down
+        sudo ot-ctl thread stop
+        sudo ot-ctl ifconfig down
+        sudo ot-ctl dataset init new
+        sudo ot-ctl dataset commit active
+        sudo ot-ctl srp server enable
 	sudo ot-ctl ifconfig up
-	sudo ot-ctl prefix add fd11:22::/64 paros
 	sudo ot-ctl thread start
 	sleep 7
-	sudo ot-ctl extpanid
 	Get_ThreadDataset
 }
 
@@ -209,10 +208,10 @@ declare optArgs=()
 declare isNodeProvided=false
 
 # Activate Matter environment if it isn't already
-pipEnv=$(pip -V)
-if [[ "$pipEnv" != *"$MATTER_ROOT"* ]]; then
-	source "$MATTER_ROOT"/scripts/activate.sh
-fi
+#pipEnv=$(pip -V)
+#if [[ "$pipEnv" != *"$MATTER_ROOT"* ]]; then
+#	source "$MATTER_ROOT"/scripts/activate.sh
+#fi
 
 while [ $# -gt 0 ]; do
     case $1 in

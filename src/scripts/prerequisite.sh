@@ -4,25 +4,21 @@ sudo apt purge -y needrestart
 sudo apt autoremove -y
 
 sudo apt update
-sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools openssh-server \
+sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools \
      libglib2.0-dev libavahi-client-dev ninja-build python3.10-venv python3-dev \
-     python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev curl
-
-sudo apt install -y pi-bluetooth avahi-utils
-
+     python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev curl \
+     pi-bluetooth avahi-utils
+# openssh-server
 cd ~/
-curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
-#sudo dpkg -i --force-overwrite /var/cache/apt/archives/nodejs_16.19.0-deb-1nodesource1_arm64.deb
-sudo apt -y install nodejs
-
-cd ~/
-git clone https://github.com/project-chip/zap.git
-cd zap
-git checkout "4f2a3d6cc1bf51"
+curl -sL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt install -y nodejs
 
 sudo apt install -y --fix-missing libpixman-1-dev libcairo-dev libsdl-pango-dev libjpeg-dev libgif-dev
 
+cd zap
 npm ci
+npm install --save core-js@^3
+npm audit fix
 
 cd ~/
 export ZAP_DEVELOPMENT_PATH="$HOME/zap"
@@ -49,7 +45,8 @@ $HOME/connectedhomeip/scripts/build/gn_bootstrap.sh
 
 sudo ufw allow 22/tcp
 sudo apt install -y needrestart
-sudo apt --fix-missing update -y
-sudo apt install -f -y
-
+#sudo apt --fix-missing update -y
+#sudo apt install -f -y
+sudo apt clean
+sudo apt autoremove --purge
 cd ~/

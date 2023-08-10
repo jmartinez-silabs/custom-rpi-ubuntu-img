@@ -38,8 +38,6 @@ STAGE_DIR=/tmp/raspbian-ubuntu
 IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
 # URL for a raspiubuntu image
-#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04-preinstalled-server-arm64+raspi.img.xz"}
-#BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.1-preinstalled-server-arm64+raspi.img.xz"}
 BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.2-preinstalled-server-arm64+raspi.img.xz"}
 
 # Where to download the raspiubuntu image
@@ -52,8 +50,8 @@ cleanup() {
     # Unmount and detach any loop devices
     loop_names=$(losetup -j $STAGE_DIR/raspiubuntuos_base.img --output NAME -n)
     for loop in ${loop_names}; do
-        sudo umount -lf "${loop}p1"
         sudo umount -lf "${loop}p2"
+        sudo umount -lf "${loop}p1"
         sudo losetup -d "${loop}"
     done
 
@@ -67,19 +65,18 @@ main() {
     # Download base image
     BASE_IMAGE_NAME=$(basename "${BASE_IMAGE_URL}" .img.xz)
     IMAGE_FILE="$BASE_IMAGE_NAME".img
-    #IMAGE_FILE="$BASE_IMAGE_NAME"
     [ -f "$TOOLS_HOME"/images/"$IMAGE_FILE" ] || {
 
         # Download image if it doesn't already exist
         [ -d "$TOOLS_HOME"/images ] || mkdir -p "$TOOLS_HOME"/images
-        [[ -f "$BASE_IMAGE_NAME".img.xz ]] | curl -kLO "$BASE_IMAGE_URL"
+        [ -f "$BASE_IMAGE_NAME".img.xz ] || curl -kLO "$BASE_IMAGE_URL"
 
         # Extract
         (xz -dkv "$BASE_IMAGE_NAME".img.xz &&
         mv -v "$IMAGE_FILE" /tmp)
         
-        # Expand OS partition to 18GB
-        EXPAND_SIZE=18432
+        # Expand OS partition to 16GB
+        EXPAND_SIZE=17352
         (cd /tmp &&
             dd if=/dev/zero bs=1048576 count="$EXPAND_SIZE" >> "$IMAGE_FILE" &&
             mv "$IMAGE_FILE" "$TOOLS_HOME"/images/"$IMAGE_FILE")
@@ -116,7 +113,7 @@ main() {
         sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh   
 
         # Tear down QEMU and create new .img file
-        sync && sleep 2
+        sync && sleep 20
         sudo ./qemu-cleanup.sh "$IMAGE_MOUNT_POINT"
         LOOP_NAME=$(losetup -j $STAGE_DIR/raspiubuntuos_base.img --output NAME -n)
         sudo sh -c "dcfldd of=$STAGE_DIR/$CUSTOM_IMG_FILE if=$LOOP_NAME bs=1m && sync"
@@ -140,7 +137,7 @@ main() {
 	cp $release_note $STAGE_DIR
 	
         # Zip image file
-        (cd $STAGE_DIR && zip "$IMG_ZIP_FILE" $CUSTOM_IMG_FILE Versions.txt && mv "$IMG_ZIP_FILE" "$OUTPUT_ROOT")
+        (cd $STAGE_DIR && zip -v "$OUTPUT_ROOT/$IMG_ZIP_FILE" $CUSTOM_IMG_FILE Versions.txt)
         #(cd $STAGE_DIR && sudo xz $CUSTOM_IMG_FILE && mv "$IMG_XZ_FILE" "$OUTPUT_ROOT")
     )
 }
