@@ -38,7 +38,15 @@ STAGE_DIR=/tmp/raspbian-ubuntu
 IMAGE_MOUNT_POINT=${OUTPUT_ROOT}/mnt-rpi
 
 # URL for a raspiubuntu image
-BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.2-preinstalled-server-arm64+raspi.img.xz"}
+BASE_IMAGE_URL=${BASE_IMAGE_URL:-"https://cdimage.ubuntu.com/releases/22.04/release/ubuntu-22.04.3-preinstalled-server-arm64+raspi.img.xz"}
+
+if curl --output /dev/null --silent --head --fail "$BASE_IMAGE_URL"
+then
+	echo "The downloading image does exist"
+else
+	echo "The downloading image does not exist"
+	exit
+fi
 
 # Where to download the raspiubuntu image
 TOOLS_HOME=$HOME/.cache/tools
@@ -118,7 +126,7 @@ main() {
                 1)
                         sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh "$1"
                         shift
-                        ;
+                        ;;
                 2)
                         sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh "$1" "$2"
                         shift
