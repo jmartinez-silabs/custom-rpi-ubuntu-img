@@ -26,30 +26,88 @@ mv -v /home/"$UBUNTUUSER"/scripts/README.md /home/"$UBUNTUUSER"/scripts/Versions
 chown -hR "$UBUNTUUSER":"$UBUNTUUSER" /home/"$UBUNTUUSER"/*
 chmod a+x /home/"$UBUNTUUSER"/scripts/*
 
-# Clone repo connectedhomeip and update submodule
-echo "---------------------------------------------------------"
-echo "3.1 Clone repo connectedhomeip and update submodule"
-echo "---------------------------------------------------------"
-
-runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu &&
+case $# in
+	0)
+		echo "---------------------------------------------------------"
+		echo "3.1 Clone repo connectedhomeip and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu &&
 			       git clone https://github.com/project-chip/connectedhomeip.git &&
 			       cd /home/ubuntu/connectedhomeip
-			       git checkout "80ee243109c" &&
-			       ./scripts/checkout_submodules.py --shallow --platform linux'
-				
-# Clone repo ot-br-posix and update submodule
-echo "---------------------------------------------------------"
-echo "3.2 Clone repo ot-br-posix and update submodule"
-echo "---------------------------------------------------------"
-runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
+			       ./scripts/checkout_submodules.py --shallow --platform linux"
+		echo "---------------------------------------------------------"
+		echo "3.2 Clone repo ot-br-posix and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
 			       git clone https://github.com/openthread/ot-br-posix.git &&
 			       cd /home/ubuntu/ot-br-posix
-			       git checkout "bb565ca01" &&
-                               git submodule update --init'
+                               git submodule update --init"
 
-# Clone repo zap and update submodule
-runuser -l "$UBUNTUUSER" -c   'cd /home/ubuntu
-			       git clone https://github.com/project-chip/zap.git'
+		# Clone repo zap and update submodule
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/project-chip/zap.git"
+		shift
+		;;
+	1)
+		echo "---------------------------------------------------------"
+		echo "3.1 Clone repo connectedhomeip and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu &&
+			       git clone https://github.com/project-chip/connectedhomeip.git &&
+			       cd /home/ubuntu/connectedhomeip
+			       git checkout $1 &&
+			       ./scripts/checkout_submodules.py --shallow --platform linux"
+		shift
+		;;
+	2)
+		echo "---------------------------------------------------------"
+		echo "3.1 Clone repo connectedhomeip and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu &&
+			       git clone https://github.com/project-chip/connectedhomeip.git &&
+			       cd /home/ubuntu/connectedhomeip
+			       git checkout $1 &&
+			       ./scripts/checkout_submodules.py --shallow --platform linux"
+		echo "---------------------------------------------------------"
+		echo "3.2 Clone repo ot-br-posix and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/openthread/ot-br-posix.git &&
+			       cd /home/ubuntu/ot-br-posix
+			       git checkout $2 &&
+                               git submodule update --init"
+		shift
+		;;
+	3)
+		echo "---------------------------------------------------------"
+		echo "3.1 Clone repo connectedhomeip and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu &&
+			       git clone https://github.com/project-chip/connectedhomeip.git &&
+			       cd /home/ubuntu/connectedhomeip
+			       git checkout $1 &&
+			       ./scripts/checkout_submodules.py --shallow --platform linux"
+		echo "---------------------------------------------------------"
+		echo "3.2 Clone repo ot-br-posix and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/openthread/ot-br-posix.git &&
+			       cd /home/ubuntu/ot-br-posix
+			       git checkout $2 &&
+                               git submodule update --init"
+
+		# Clone repo zap and update submodule
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/project-chip/zap.git &&
+			       cd /home/ubuntu/zap
+			       git checkout $3"
+		shift
+		;;
+	*)
+		echo "Never happen"
+		shift
+		;;
+esac
 
 # Add aliases for matterTool.sh and setupOTBR.sh
 echo "---------------------------------------------------------"
@@ -84,3 +142,4 @@ mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf
 echo "127.0.1.1 $UBUNTUUSER" | tee -a /etc/hosts
+exit

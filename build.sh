@@ -110,7 +110,26 @@ main() {
         # Use chroot to run any commands
         # Ex:
         #     sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash whoami
-        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh   
+        case $# in
+                0)
+                        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh
+                        shift
+                        ;;
+                1)
+                        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh "$1"
+                        shift
+                        ;
+                2)
+                        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh "$1" "$2"
+                        shift
+                        ;;
+                3)
+                        sudo chroot "${IMAGE_MOUNT_POINT}" /bin/bash /repo/src/customizeImage.sh "$1" "$2" "$3"
+                        shift
+                        ;;
+                *)
+                        echo "Never happen."
+        esac
 
         # Tear down QEMU and create new .img file
         sync && sleep 20
