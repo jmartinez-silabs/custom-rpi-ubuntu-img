@@ -57,6 +57,18 @@ case $# in
 			       cd /home/ubuntu/connectedhomeip
 			       git checkout $1 &&
 			       ./scripts/checkout_submodules.py --shallow --platform linux"
+
+		echo "3.2 Clone repo ot-br-posix and update submodule"
+		echo "---------------------------------------------------------"
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/openthread/ot-br-posix.git &&
+			       cd /home/ubuntu/ot-br-posix
+                               git submodule update --init"
+
+		# Clone repo zap and update submodule
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/project-chip/zap.git"
+
 		shift
 		;;
 	2)
@@ -68,6 +80,7 @@ case $# in
 			       cd /home/ubuntu/connectedhomeip
 			       git checkout $1 &&
 			       ./scripts/checkout_submodules.py --shallow --platform linux"
+
 		echo "---------------------------------------------------------"
 		echo "3.2 Clone repo ot-br-posix and update submodule"
 		echo "---------------------------------------------------------"
@@ -76,6 +89,11 @@ case $# in
 			       cd /home/ubuntu/ot-br-posix
 			       git checkout $2 &&
                                git submodule update --init"
+
+		# Clone repo zap and update submodule
+		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
+			       git clone https://github.com/project-chip/zap.git"
+
 		shift
 		;;
 	3)
@@ -117,6 +135,7 @@ echo '# Matter related alias' | tee -a /home/$UBUNTUUSER/.bashrc
 echo "alias mattertool='source /home/ubuntu/scripts/matterTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias otbrsetup='source /home/ubuntu/scripts/setupOTBR.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "alias updatetool='source /home/ubuntu/scripts/updateTool.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
+echo "alias rebuild='source /home/ubuntu/scripts/rebuild.sh'" | tee -a /home/"$UBUNTUUSER"/.bashrc
 echo "export ZAP_DEVELOPMENT_PATH=/home/ubuntu/zap" | tee -a /home/"$UBUNTUUSER"/.bashrc
 
 # Prerequisites installation

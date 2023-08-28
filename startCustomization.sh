@@ -7,7 +7,7 @@ zapCommit=""
 Print_Help()
 {
     echo "-----------------------------------------------------------------------------------------------------"
-    echo "This bash script centralizes and simplifies the local otbr & chip-tool rebuild of the given commits."
+    echo "This bash script centralizes and simplifies the building of raspi image that includes otbr&chiptool built-in."
     echo "Usage:"
     echo "        startCustomization -h"
     echo "        startCustomization -ct <commit_hash>"
@@ -17,8 +17,8 @@ Print_Help()
     echo "Available options:"
     echo "        -h, --help           Print this help."
     echo "        -ct, --chiptool      Specific commit of chip-tool for checking out."
-    echo "        -otbr, --otbrposix   Speccific commit of ot-br for checking out."
-    echo "        -z, --zap            Speccific commit of zap for checking out."
+    echo "        -otbr, --otbrposix   Specific commit of ot-br for checking out."
+    echo "        -z, --zap            Specific commit of zap for checking out."
     echo ""
     echo "               Note: the order of the parameters are not important                 "
     echo ""
@@ -39,12 +39,12 @@ case $# in
 				shift
 				exit
 				;;
-		*)
-			echo "First argument is invalid"
-			Print_Help
-			exit
-			shift
-			;;
+			*)
+				echo "First argument is invalid"
+				Print_Help
+				exit
+				shift
+				;;
 		esac
 		shift
 		;;

@@ -1,0 +1,40 @@
+{ "release":"v2.1.0-1.1",
+  "commits": { 
+  		"chipTool": "80ee243109c",
+  		"otefr32": "c252bafd663",
+  		"openthread": "e6df00dd6",
+  		"otbrposix": "bb565ca01",
+  		      "zap": "612e78b5"
+  	     }
+}
+
+{ "release":"v2.0.0-1.1",
+  "commits": { 
+  		"chipTool": "80ee243109c",
+  		"otefr32": "c252bafd663",
+  		"openthread": "91fa1f455a1",
+  		"otbrposix": "d9103922af7",
+  		      "zap": "4f2a3d6cc1bf51"
+  	     }
+}
+
+{ "release":"v1.1.0-1.1",
+  "commits": { 
+  		"chipTool": "7e69c66bb",
+  		"otefr32": "038475dcc21",
+  		"openthread": "91fa1f455",
+  		"otbrposix": "d9103922a",
+  		      "zap": ""
+  	     }
+}
+
+{ "release":"v1.0.0",
+  "commits": { 
+  		"chipTool": "7f2b0a5920d",
+  		"otefr32": "038475dcc21",
+  		"openthread": "2ce3d3bf021",
+  		"otbrposix": "1813352247a",
+  		      "zap": ""
+  	     }
+}
+

@@ -7,7 +7,7 @@ sudo apt update
 sudo apt install -y gcc g++ pkg-config libssl-dev libdbus-1-dev net-tools \
      libglib2.0-dev libavahi-client-dev ninja-build python3.10-venv python3-dev \
      python3-pip unzip libgirepository1.0-dev libcairo2-dev libreadline-dev curl \
-     pi-bluetooth avahi-utils
+     pi-bluetooth avahi-utils jq
 # openssh-server
 cd ~/
 curl -sL https://deb.nodesource.com/setup_20.x | sudo bash -
