@@ -6,7 +6,15 @@ This will only work on **linux** machines. It will not work on macOS because the
 ## Usage
 
 ### Building
-To build, simply run `./startCustomization.sh`. This script will do the following:
+To build, simply run `./startCustomization.sh` for the latest commits of chiptool, ot-br-posix and zap or following below syntax:
+
+	startCustomization -h                                                            # for help
+	startCustomization -ct <commit_hash>"                                            # commits of ot-br-posix and zap are the latest
+	startCustomization -otbr <commit_hash>"                                          # commits of chip-tool and zap are the latest
+	startCustomization -z <commit_hash>"                                             # commits of chip-tool and ot-br-posix are the latest
+	startCustomization -ct <commit_hash> -otbr <commit_hash> -zap <commit_hash>"     # Specific commits for ot-br-posix, chip-tool and zap are provided
+
+This script will do the following:
 
 - Download the base raspios image if not already downloaded
 - Mount preinstalled ubuntu for raspi

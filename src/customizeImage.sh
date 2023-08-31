@@ -20,11 +20,15 @@ dpkg-reconfigure debconf -f noninteractive -p critical
 
 apt install -y git
 
+mkdir -p /home/"$UBUNTUUSER"/udpdiscovery/src
 cp -vr /repo/src/scripts /home/"$UBUNTUUSER"
 mv -v /home/"$UBUNTUUSER"/scripts/README.md /home/"$UBUNTUUSER"/scripts/Versions.txt /home/"$UBUNTUUSER"
+mv -v /home/"$UBUNTUUSER"/scripts/udpdiscovery-server.go /home/"$UBUNTUUSER"/udpdiscovery/src
+mv -v /home/"$UBUNTUUSER"/scripts/udpdiscovery.service /lib/systemd/system
 
 chown -hR "$UBUNTUUSER":"$UBUNTUUSER" /home/"$UBUNTUUSER"/*
 chmod a+x /home/"$UBUNTUUSER"/scripts/*
+chmod 755 /lib/systemd/system/udpdiscovery.service
 
 case $# in
 	0)
@@ -68,7 +72,6 @@ case $# in
 		# Clone repo zap and update submodule
 		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
 			       git clone https://github.com/project-chip/zap.git"
-
 		shift
 		;;
 	2)
@@ -93,7 +96,6 @@ case $# in
 		# Clone repo zap and update submodule
 		runuser -l "$UBUNTUUSER" -c   "cd /home/ubuntu
 			       git clone https://github.com/project-chip/zap.git"
-
 		shift
 		;;
 	3)
@@ -161,4 +163,4 @@ mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
 ln -s ../run/systemd/resolve/resolv.conf /etc/resolv.conf
 echo "127.0.1.1 $UBUNTUUSER" | tee -a /etc/hosts
-exit
+#exit

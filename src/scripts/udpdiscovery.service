@@ -1,0 +1,28 @@
+[Unit]
+Description=UDP Discovery Service
+ConditionPathExists=/home/ubuntu/udpdiscovery
+After=network.target
+ 
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+# startLimitIntervalSec=60
+
+WorkingDirectory=/home/ubuntu/udpdiscovery
+ExecStart=/home/ubuntu/udpdiscovery/udpdiscovery-server --name='Udp Discovery Service'
+
+# make sure log directory exists and owned by syslog
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /var/log/udpdiscovery
+ExecStartPre=/bin/chown syslog:adm /var/log/udpdiscovery
+ExecStartPre=/bin/chmod 755 /var/log/udpdiscovery
+
+SyslogIdentifier=udpdiscovery
+ 
+[Install]
+WantedBy=multi-user.target

@@ -81,10 +81,10 @@ main()
     fi
     
     if [[ ! -d "./connectedhomeip/src" ]]; then
-	mv "connectedhomeip" "connectedhomeip-temp"
+	mv "./connectedhomeip" "./connectedhomeip-temp"
 	git clone https://github.com/project-chip/connectedhomeip.git &&
-	cp -PRvf "connectedhomeip-temp/out" "connectedhomeip" &&
-	rm -rf "connectedhomeip-temp"
+	cp -PRvf "./connectedhomeip-temp/out" "./connectedhomeip" &&
+	rm -rf "./connectedhomeip-temp"
     fi
     
     # Check out the given commit for zap
