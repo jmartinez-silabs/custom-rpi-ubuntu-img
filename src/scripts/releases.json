@@ -1,3 +1,23 @@
+{ "release":"v2.2.0-1.2-ext",
+  "commits": {
+		"chipTool": "d140d5c8775",
+		"otefr32": "e75c76737",
+		"openthread": "7074a43e4",
+		"otbrposix": "42f98b27b",
+		      "zap": "bbcf0ac81d"
+	     }
+}
+
+{ "release":"v2.2.0-1.2",
+  "commits": {
+		"chipTool": "d140d5c8775",
+		"otefr32": "c252bafd663",
+		"openthread": "e6df00dd6",
+		"otbrposix": "bb565ca01",
+		      "zap": "bbcf0ac81d"
+	     }
+}
+
 { "release":"v2.2.0-1.2-alpha.1",
   "commits": {
 		"chipTool": "684b9d6246e",
@@ -47,4 +67,3 @@
   		      "zap": ""
   	     }
 }
-
