@@ -47,13 +47,14 @@ export SSID
 export GOPATH="$HOME/go"
 # export PATH=$PATH:/usr/local/go/bin
 
-cd scripts
 # Smaller footprint bootstrap (prepare the minimal environment for chipt-tool)
 #$HOME/connectedhomeip/scripts/build/gn_bootstrap.sh
 # Clean build of chip-tool
-./matterTool.sh buildCT
+cd ~/connectedhomeip
+source ~/scripts/matterTool.sh buildCT
 
 # Build and install otbr
+cd ~/scripts
 ./setupOTBR.sh -if wlan0 -s
 ./setupOTBR.sh -i
 
