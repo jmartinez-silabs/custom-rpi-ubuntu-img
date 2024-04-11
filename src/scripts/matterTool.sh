@@ -172,9 +172,9 @@ Pair_BLE_WiFi ()
 		export NODE_ID=$((1 + $RANDOM % 100000))
 	fi
 
-	echo_green "Set Node id for the commissioned device : $NODE_ID"
-	export LAST_NODE_ID = $NODE_ID
-	"{$CHIPTOOL_PATH}" pairing ble-wifi "${NODE_ID}" "${SSID}" "${WIFI_PW}" "${PINCODE}" "${DISCRIMINATOR}"
+	export LAST_NODE_ID="$NODE_ID"
+	"${CHIPTOOL_PATH}" pairing ble-wifi ${NODE_ID} "${SSID}" "${WIFI_PW}" "${PINCODE}" "${DISCRIMINATOR}"
+        echo_blue "The Node id of the commissioned device is $NODE_ID"
 }
 
 Send_OnOff_Cmds ()
@@ -207,6 +207,8 @@ declare cmd=""
 declare optArgs=()
 declare isNodeProvided=false
 
+# Comment out the activate as it, currently, cannot be run outside of the matter root repo.
+# This is only needed to build Chip-tool and can be done manually by the user
 # Activate Matter environment if it isn't already
 #pipEnv=$(pip -V)
 #if [[ "$pipEnv" != *"$MATTER_ROOT"* ]]; then

@@ -51,7 +51,10 @@ export GOPATH="$HOME/go"
 #$HOME/connectedhomeip/scripts/build/gn_bootstrap.sh
 # Clean build of chip-tool
 cd ~/connectedhomeip
+# TODO This is a temp fix to not use matter .environment has bootstrap fails on 1.2 versions
+sed -i '/prompt-toolkit==3.0.38/d' scripts/setup/constraints.txt
 source ~/scripts/matterTool.sh buildCT
+./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ota-provider chip_config_network_layer_ble=false
 
 # Build and install otbr
 cd ~/scripts

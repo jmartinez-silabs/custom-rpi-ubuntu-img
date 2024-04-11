@@ -154,6 +154,7 @@ echo "3.5 Clean up customization"
 echo "---------------------------------------------------------"
 
 cd /home/ubuntu/connectedhomeip/out/standalone && find . -maxdepth 1 ! -name chip-tool -exec rm -fr {} \;
+cd /home/ubuntu/connectedhomeip/out/ota-provider && find . -maxdepth 1 ! -name chip-ota-provider-app -exec rm -fr {} \;
 cd /home/ubuntu/connectedhomeip && find . -maxdepth 1 ! -name out -exec rm -fr {} \;
 sh -c 'echo 3 > /proc/sys/vm/drop_caches'
 cd /home/ubuntu && rm -rf ./.cache/* ./.cipd-cache-dir/* ./zap ./ot-br-posix
