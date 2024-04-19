@@ -146,12 +146,12 @@ Pair_BLE_Thread ()
 		return
 	fi
 
-	if [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
+    if [ $isNodeProvided -eq 0 ] && [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
 		export NODE_ID=$((1 + $RANDOM % 100000))
 	fi
 
 	export LAST_NODE_ID="$NODE_ID"
-	"${CHIPTOOL_PATH}" pairing ble-thread ${NODE_ID} hex:"${THREAD_DATA_SET}" "${PINCODE}" "${DISCRIMINATOR}"
+	"${CHIPTOOL_PATH}" pairing ble-thread ${NODE_ID} hex:"${THREAD_DATA_SET}" "${PINCODE}" "${DISCRIMINATOR}" "${optArgs[@]}"
 	echo_blue "The Node id of the commissioned device is $NODE_ID"
 }
 
@@ -167,14 +167,14 @@ Pair_BLE_WiFi ()
 		echo_blue "Provide SSID password"
 		return
 	fi
-
-	if [["$LAST_NODE_ID" == "$NODE_ID" ] && isNodeProvided = true]; then
+	
+	if [ $isNodeProvided -eq 0 ] && [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
 		export NODE_ID=$((1 + $RANDOM % 100000))
 	fi
 
 	export LAST_NODE_ID="$NODE_ID"
-	"${CHIPTOOL_PATH}" pairing ble-wifi ${NODE_ID} "${SSID}" "${WIFI_PW}" "${PINCODE}" "${DISCRIMINATOR}"
-        echo_blue "The Node id of the commissioned device is $NODE_ID"
+	"${CHIPTOOL_PATH}" pairing ble-wifi ${NODE_ID} "${SSID}" "${WIFI_PW}" "${PINCODE}" "${DISCRIMINATOR}" "${optArgs[@]}"
+	echo_blue "The Node id of the commissioned device is $NODE_ID"
 }
 
 Send_OnOff_Cmds ()
@@ -205,7 +205,7 @@ declare -A cmd_list=(
 
 declare cmd=""
 declare optArgs=()
-declare isNodeProvided=false
+declare isNodeProvided=0
 
 # Comment out the activate as it, currently, cannot be run outside of the matter root repo.
 # This is only needed to build Chip-tool and can be done manually by the user
@@ -227,7 +227,7 @@ while [ $# -gt 0 ]; do
                 return
             fi
             export NODE_ID="$2"
-			isNodeProvided=true
+			isNodeProvided=1
             shift
             shift
             ;;

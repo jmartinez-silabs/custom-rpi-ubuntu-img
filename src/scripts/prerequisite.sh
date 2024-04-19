@@ -51,15 +51,14 @@ export GOPATH="$HOME/go"
 #$HOME/connectedhomeip/scripts/build/gn_bootstrap.sh
 # Clean build of chip-tool
 cd ~/connectedhomeip
-# TODO This is a temp fix to not use matter .environment has bootstrap fails on 1.2 versions
-sed -i '/prompt-toolkit==3.0.38/d' scripts/setup/constraints.txt
+# TODO:  Matter 1.2 bootstrap temp fix remove prompt-toolkit - not needed for 1.3
+# sed -i '/prompt-toolkit==3.0.38/d' scripts/setup/constraints.txt
 source ~/scripts/matterTool.sh buildCT
 ./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ota-provider chip_config_network_layer_ble=false
 
 # Build and install otbr
 cd ~/scripts
-./setupOTBR.sh -if wlan0 -s
-./setupOTBR.sh -i
+./setupOTBR.sh -if wlan0 -i
 
 # Build udp discovery service
 cd ~/udpdiscovery/
@@ -72,6 +71,10 @@ sudo ufw allow 22/tcp
 sudo apt install -y needrestart
 #sudo apt --fix-missing update -y
 #sudo apt install -f -y
+
+#enable clock sync
+sudo systemctl enable systemd-timesyncd
+
 sudo apt clean
 sudo apt autoremove --purge
 cd ~/
