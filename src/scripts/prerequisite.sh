@@ -58,7 +58,7 @@ source ~/scripts/matterTool.sh buildCT
 
 # Build and install otbr
 cd ~/scripts
-./setupOTBR.sh -if wlan0 -i
+./setupOTBR.sh -if eth0 -i
 
 # Build udp discovery service
 cd ~/udpdiscovery/
