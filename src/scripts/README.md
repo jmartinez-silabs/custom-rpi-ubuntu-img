@@ -69,7 +69,7 @@ Available options  :
 ```
 
 ### Usage:
-  Change infrastructure interface to eth0
+  Change infrastructure interface to wlan0
   ```
   otbrsetup -if wlan0 -s
   ```
