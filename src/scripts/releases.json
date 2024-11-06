@@ -1,3 +1,13 @@
+{ "release":"v2.4.0-1.4-ext",
+  "commits": {
+		"chipTool": "eb2936c73b",
+		"otefr32": "2980044",
+		"openthread": "1fceb225b",
+		"otbrposix": "e56c02006",
+		      "zap": "57ffa8ef"
+	     }
+}
+
 { "release":"v2.3.0-1.3-ext",
   "commits": {
 		"chipTool": "5bb5c9e23d5",
