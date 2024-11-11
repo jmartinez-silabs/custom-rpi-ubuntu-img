@@ -159,6 +159,11 @@ cd /home/ubuntu/connectedhomeip && find . -maxdepth 1 ! -name out -exec rm -fr {
 sh -c 'echo 3 > /proc/sys/vm/drop_caches'
 cd /home/ubuntu && rm -rf ./.cache/* ./.cipd-cache-dir/* ./zap ./ot-br-posix
 
+#creating a file which comes alphabetically before 50-cloud-init.conf such that it ovewrites the  config
+sudo tee /etc/ssh/sshd_config.d/40-user-config.conf > /dev/null <<EOL
+PasswordAuthentication yes
+EOL
+
 chmod a-x ./scripts/matterTool.sh
 mv /etc/apt/apt.conf.d/70debconf.bak /etc/apt/apt.conf.d/70debconf
 rm -f /etc/resolv.conf
