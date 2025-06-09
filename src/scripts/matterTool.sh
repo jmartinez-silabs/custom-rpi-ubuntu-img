@@ -142,11 +142,14 @@ Get_ThreadDataset()
 Pair_BLE_Thread ()
 {
 	if [[ "$THREAD_DATA_SET" == "0" ]]; then
-		echo_blue "Provide OpenThread DataSet"
-		return
+		echo_blue "No OpenThread Dataset provided. Fetching from on-hub otbr"
+		Get_ThreadDataset
+		if [[ "$THREAD_DATA_SET" == "0" ]]; then
+			Start_ThreadNetwork
+		fi
 	fi
 
-    if [ $isNodeProvided -eq 0 ] && [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
+        if [ $isNodeProvided -eq 0 ] && [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
 		export NODE_ID=$((1 + $RANDOM % 100000))
 	fi
 
@@ -167,7 +170,7 @@ Pair_BLE_WiFi ()
 		echo_blue "Provide SSID password"
 		return
 	fi
-	
+
 	if [ $isNodeProvided -eq 0 ] && [[ "$LAST_NODE_ID" == "$NODE_ID" ]]; then
 		export NODE_ID=$((1 + $RANDOM % 100000))
 	fi
