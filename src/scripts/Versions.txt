@@ -1,7 +1,7 @@
 Versions
-* Silicon Labs Matter Extension: v2.5.0-1.4
+* Silicon Labs Matter Extension: v2.6.0-1.4
 * Matter / Chip-Tool: fd2d0000ee 
 * OpenThread
-  * ot-efr32: 91d44bc
-  * openthread: 7f6723ffb
-  * ot-br-posix: 7d327005e 
+  * ot-efr32: 0b2bcd9
+  * openthread: fb0446f53
+  * ot-br-posix: 622f5ecf 
